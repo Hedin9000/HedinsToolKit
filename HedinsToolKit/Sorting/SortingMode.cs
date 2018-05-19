@@ -6,7 +6,17 @@ namespace HedinsToolKit.Sorting
 {
     public enum SortingMode
     {
+        /// <summary>
+        /// Use bubble sorting
+        /// </summary>
         Bubble,
-        Merge
+        /// <summary>
+        /// Use merge sorting
+        /// </summary>
+        Merge,
+        /// <summary>
+        /// Use quick sorting
+        /// </summary>
+        Quick
     }
 }

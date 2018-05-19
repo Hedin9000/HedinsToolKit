@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -15,7 +16,7 @@ namespace HedinsToolKit.Sorting
         /// <typeparam name="TItem">Type of item</typeparam>
         /// <param name="list">List of item</param>
         public static void BubbleSort<TItem>(IList<TItem> list)
-            where TItem : IComparable
+            where TItem : IComparable<TItem>
         {
             BubbleSort(list, (x, y) => x.CompareTo(y));
         }
@@ -35,49 +36,9 @@ namespace HedinsToolKit.Sorting
             {
                 for (var j = a.Count - 1; j > i; j--)
                 {
-
                     if (comparison(a[j - 1], a[j]) > 0)
                     {
-                        var arrayItem = a[j - 1];
-                        a[j - 1] = a[j];
-                        a[j] = arrayItem;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Bubble Sorting algoritm
-        /// </summary>
-        /// <typeparam name="TItem">Type of item</typeparam>
-        /// <param name="list">List of item</param>
-        public static void BubbleSort<TItem>(TItem[] list)
-            where TItem : IComparable
-        {
-            BubbleSort(list, (x, y) => x.CompareTo(y));
-        }
-
-        /// <summary>
-        /// Bubble Sorting algoritm
-        /// </summary>
-        /// <typeparam name="TItem">Type of item</typeparam>
-        /// <param name="list">List of item</param>
-        /// <param name="comparison">Comparison func. Example for list of int: (x, y) => x - y)</param>
-        public static void BubbleSort<TItem>(TItem[] list, Comparison<TItem> comparison)
-        {
-            if (list.Length <= 1)
-                return;
-            var a = list;
-            for (var i = 0; i < a.Length; i++)
-            {
-                for (var j = a.Length - 1; j > i; j--)
-                {
-
-                    if (comparison(a[j - 1], a[j]) > 0)
-                    {
-                        var arrayItem = a[j - 1];
-                        a[j - 1] = a[j];
-                        a[j] = arrayItem;
+                        Swap(list, j - 1, j);
                     }
                 }
             }
@@ -92,9 +53,8 @@ namespace HedinsToolKit.Sorting
         /// </summary>
         /// <typeparam name="TItem">Type of item</typeparam>
         /// <param name="list">List of item</param>
-        /// <param name="comparison"></param>
-        public static void MergeSort<TItem>(TItem[] list)
-        where TItem : IComparable
+        public static void MergeSort<TItem>(IList<TItem> list)
+        where TItem : IComparable<TItem>
         {
             MergeSort(list,(x, y) => x.CompareTo(y));
         }
@@ -104,103 +64,150 @@ namespace HedinsToolKit.Sorting
         /// </summary>
         /// <typeparam name="TItem">Type of item</typeparam>
         /// <param name="list">List of item</param>
-        public static void MergeSort<TItem>(List<TItem> list)
-            where TItem : IComparable
-        {
-            MergeSort(list, (x, y) => x.CompareTo(y));
-        }
-        /// <summary>
-        /// Merge Sorting algoritm
-        /// </summary>
-        /// <typeparam name="TItem">Type of item</typeparam>
-        /// <param name="list">List of item</param>
         /// <param name="comparison">Comparison func. Example for list of int: (x, y) => x - y)</param>
-        public static void MergeSort<TItem>(TItem[] list, Comparison<TItem> comparison)
+        public static void MergeSort<TItem>(IList<TItem> list, Comparison<TItem> comparison)
         {
-            var length = list.Length;
-            if (length <= 1)
-                return;
-
-            var leftSize = length / 2;
-            var rightSize = length - leftSize;
-
-            var leftArray  = new TItem[leftSize];
-            var rightArray = new TItem[rightSize];
-       
-            Array.Copy(list, 0, leftArray, 0, leftSize);
-            Array.Copy(list, leftSize, rightArray, 0, rightSize);
-
-            MergeSort(leftArray, comparison);
-            MergeSort(rightArray, comparison);
-            Merge(list, leftArray, rightArray, comparison);
-
+            MergeSort(list,comparison,0,list.Count-1);
         }
-
-        /// <summary>
-        /// Merge Sorting algoritm
-        /// </summary>
-        /// <typeparam name="TItem">Type of item</typeparam>
-        /// <param name="list">List of item</param>
-        /// <param name="comparison">Comparison func. Example for list of int: (x, y) => x - y)</param>
-        public static void MergeSort<TItem>(List<TItem> list, Comparison<TItem> comparison)
+        
+        private static void MergeSort<TItem>(IList<TItem> list, Comparison<TItem> comparison, int leftIndex, int rightIndex)
         {
-            var length = list.Count;
-            if (length <= 1)
-                return;
-
-            var leftSize = length / 2;
-            var rightSize = length - leftSize;
-
-            var leftArray = list.GetRange(0,leftSize);
-             var rightArray = list.GetRange(leftSize,rightSize);
-
-            MergeSort(leftArray, comparison);
-            MergeSort(rightArray, comparison);
-            Merge(list, leftArray, rightArray, comparison);
-
-        }
-
-        /// <summary>
-        /// Merge left array and right array to destination list.
-        /// </summary>
-        /// <typeparam name="TItem"></typeparam>
-        /// <param name="items"></param>
-        /// <param name="leftArray"></param>
-        /// <param name="rightArray"></param>
-        /// <param name="comparison"></param>
-        private static void Merge<TItem>(IList<TItem> items, IReadOnlyList<TItem> leftArray, IReadOnlyList<TItem> rightArray,
-            Comparison<TItem> comparison)
-        {
-            var leftIndex = 0;
-            var rightIndex = 0;
-            var targetIndex = 0;
-            var remaining = leftArray.Count + rightArray.Count;
-
-            while (remaining > 0)
+            if (leftIndex < rightIndex)
             {
-                if (leftIndex >= leftArray.Count)
+                var length = (rightIndex + leftIndex) / 2;
+
+                MergeSort(list, comparison, leftIndex, length);
+
+                length++;
+
+                MergeSort(list, comparison, length, rightIndex);
+
+                Merge(list, comparison, leftIndex, length, rightIndex);
+            }
+        }
+
+        private static void Merge<TItem>(IList<TItem> list, Comparison<TItem> comparison, int leftIndex, int midIndex, int rightIndex)
+        {
+            var tempItems = new TItem[list.Count];
+        
+            var leftEnd = midIndex - 1;
+            var tempPosition = leftIndex;
+            var lengthOfInput = rightIndex - leftIndex + 1;
+
+            while ((leftIndex <= leftEnd) && (midIndex <= rightIndex))
+            {
+                if (comparison(list[leftIndex], list[midIndex]) <= 0)
                 {
-                    items[targetIndex] = rightArray[rightIndex++];
-                }
-                else if (rightIndex >= rightArray.Count)
-                {
-                    items[targetIndex] = leftArray[leftIndex++];
-                }
-                else if (comparison(leftArray[leftIndex], rightArray[rightIndex]) < 0)
-                {
-                    items[targetIndex] = leftArray[leftIndex++];
+                    tempItems[tempPosition++] = list[leftIndex++];
                 }
                 else
                 {
-                    items[targetIndex] = rightArray[rightIndex++];
+                    tempItems[tempPosition++] = list[midIndex++];
                 }
+            }
 
-                targetIndex++;
-                remaining--;
+            while (leftIndex <= leftEnd)
+            {
+                tempItems[tempPosition++] = list[leftIndex++];
+            }
+
+            while (midIndex <= rightIndex)
+            {
+                tempItems[tempPosition++] = list[midIndex++];
+            }
+
+            for (var i = 0; i < lengthOfInput; i++) 
+            {
+                list[rightIndex] = tempItems[rightIndex];
+                rightIndex--;
             }
         }
 
         #endregion
 
+        #region QuickSort
+
+        /// <summary>
+        /// Quick Sorting algoritm
+        /// </summary>
+        /// <typeparam name="TItem">Type of item</typeparam>
+        /// <param name="list">List of item</param>
+        /// <param name="comparison">Comparison func. Example for list of int: (x, y) => x - y)</param>
+        public static void QuickSort<TItem>(IList<TItem> list)
+        where TItem : IComparable<TItem>
+        {
+            QuickSort(list, ((x, y) => x.CompareTo(y)));
+        }
+
+        /// <summary>
+        /// Quick Sorting algoritm
+        /// </summary>
+        /// <typeparam name="TItem">Type of item</typeparam>
+        /// <param name="list">List of item</param>
+        /// <param name="comparison">Comparison func. Example for list of int: (x, y) => x - y)</param>
+        public static void QuickSort<TItem>(IList<TItem> list, Comparison<TItem> comparison)
+        {
+            QuickSort(list,comparison,0,list.Count -1);
+        }
+
+        private static void QuickSort<TItem>(IList<TItem> items, Comparison<TItem> comparison, int startIndex, int endIndex)
+        {
+            var leftIndex = startIndex;
+            var rightIndex = endIndex;
+            var pivot = items[(startIndex + endIndex) / 2];
+
+            while (leftIndex <= rightIndex)
+            {
+                while (comparison(items[leftIndex],pivot) < 0)
+                {
+                    leftIndex++;
+                }
+
+                while (comparison(items[rightIndex],pivot) > 0)
+                {
+                    rightIndex--;
+                }
+
+                if (leftIndex <= rightIndex)
+                {
+                    Swap(items, leftIndex,rightIndex);
+                    leftIndex++;
+                    rightIndex--;
+                }
+            }
+   
+            if (startIndex < rightIndex)
+            {
+                QuickSort(items, comparison, startIndex, rightIndex);
+            }
+
+            if (leftIndex < endIndex)
+            {
+                QuickSort(items, comparison, leftIndex, endIndex);
+            }
+        }
+        
+        #endregion
+
+        #region Helpers
+
+        /// <summary>
+        /// Swap two items in list.
+        /// </summary>
+        /// <typeparam name="TItem">Type of item</typeparam>
+        /// <param name="items">List of items</param>
+        /// <param name="sourseIndex">First index</param>
+        /// <param name="destinationIndex">Second index</param>
+        public static void Swap<TItem>(IList<TItem> items, int sourseIndex, int destinationIndex)
+        {
+            if (sourseIndex != destinationIndex)
+            {
+                var temp = items[sourseIndex];
+                items[sourseIndex] = items[destinationIndex];
+                items[destinationIndex] = temp;
+            }
+        }
+
+        #endregion
     }
 }
