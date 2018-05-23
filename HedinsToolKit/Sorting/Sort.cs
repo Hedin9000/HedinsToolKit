@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace HedinsToolKit.Sorting
 {
-    public static class Sorting
+    public static class Sort
     {
         #region Bubble Sorting
 

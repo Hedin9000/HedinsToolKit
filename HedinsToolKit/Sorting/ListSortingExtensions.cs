@@ -30,13 +30,13 @@ namespace HedinsToolKit.Sorting
             switch (mode)
             {
                 case SortingMode.Bubble:
-                    Sorting.BubbleSort(list, comparison);
+                    Sorting.Sort.BubbleSort(list, comparison);
                     break;
                 case SortingMode.Merge:
-                    Sorting.MergeSort(list, comparison);
+                    Sorting.Sort.MergeSort(list, comparison);
                     break;
                 case SortingMode.Quick:
-                    Sorting.QuickSort(list, comparison);
+                    Sorting.Sort.QuickSort(list, comparison);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
@@ -53,7 +53,7 @@ namespace HedinsToolKit.Sorting
         public static void BubbleSort<TItem>(this IList<TItem> list)
             where TItem : IComparable<TItem>
         {
-            Sorting.BubbleSort(list);
+            Sorting.Sort.BubbleSort(list);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace HedinsToolKit.Sorting
         /// <param name="comparison">Comparison func. Example for list of int: (x, y) => x - y)</param>
         public static void BubbleSort<TItem>(this IList<TItem> list, Comparison<TItem> comparison)
         {
-            Sorting.BubbleSort(list,comparison);
+            Sorting.Sort.BubbleSort(list, comparison);
         }
 
         #endregion
@@ -79,7 +79,7 @@ namespace HedinsToolKit.Sorting
         public static void MergeSort<TItem>(this IList<TItem> list)
             where TItem : IComparable<TItem>
         {
-            Sorting.MergeSort(list);
+            Sorting.Sort.MergeSort(list);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace HedinsToolKit.Sorting
         /// <param name="comparison">Comparison func. Example for list of int: (x, y) => x - y)</param>
         public static void MergeSort<TItem>(this IList<TItem> list, Comparison<TItem> comparison)
         {
-            Sorting.MergeSort(list, comparison);
+            Sorting.Sort.MergeSort(list, comparison);
         }
         
         #endregion
@@ -105,7 +105,7 @@ namespace HedinsToolKit.Sorting
         public static void QuickSort<TItem>(this IList<TItem> list)
             where TItem : IComparable<TItem>
         {
-            Sorting.QuickSort(list);
+            Sorting.Sort.QuickSort(list);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace HedinsToolKit.Sorting
         /// <param name="comparison">Comparison func. Example for list of int: (x, y) => x - y)</param>
         public static void QuickSort<TItem>(this IList<TItem> list, Comparison<TItem> comparison)
         {
-            Sorting.QuickSort(list, comparison);
+            Sorting.Sort.QuickSort(list, comparison);
         }
 
         #endregion

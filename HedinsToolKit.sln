@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HedinsToolKit", "HedinsToolKit\HedinsToolKit.csproj", "{A1507210-4BDF-4F34-841F-8714DE7DC621}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HedinsToolKit.Tests", "HedinsToolKit.Tests\HedinsToolKit.Tests.csproj", "{0BE3702C-0B6F-47B0-84FD-C7278D2A15C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A1507210-4BDF-4F34-841F-8714DE7DC621}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1507210-4BDF-4F34-841F-8714DE7DC621}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1507210-4BDF-4F34-841F-8714DE7DC621}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BE3702C-0B6F-47B0-84FD-C7278D2A15C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BE3702C-0B6F-47B0-84FD-C7278D2A15C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BE3702C-0B6F-47B0-84FD-C7278D2A15C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BE3702C-0B6F-47B0-84FD-C7278D2A15C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
