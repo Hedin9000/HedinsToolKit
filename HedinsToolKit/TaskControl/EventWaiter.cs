@@ -18,11 +18,12 @@ namespace HedinsToolKit.TaskControl
         public static async Task<TArgs> WaitAsync<TArgs>(Action<EventHandler<TArgs>> subscribeEventAction, Action<EventHandler<TArgs>> unsubscribeEventAction)
         {
             var taskCompletionSource = new TaskCompletionSource<TArgs>();
-            EventHandler<TArgs> handler = (sender, args) => { taskCompletionSource.TrySetResult(args); };
 
-            subscribeEventAction(handler);
+            void Handler(object sender, TArgs args) => taskCompletionSource.TrySetResult(args);
+
+            subscribeEventAction(Handler);
             await taskCompletionSource.Task;
-            unsubscribeEventAction(handler);
+            unsubscribeEventAction(Handler);
             
             return taskCompletionSource.Task.Result;
         }

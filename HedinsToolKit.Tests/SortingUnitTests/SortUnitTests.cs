@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace HedinsToolKit.Tests
 {
-    public class SortInitTest
+    public class SortUnitTest
     {
         [Fact]
         public void BubbleSortTest()
