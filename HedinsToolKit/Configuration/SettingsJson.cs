@@ -92,7 +92,10 @@ namespace HedinsToolKit.Configuration
             else
             {
                 var settings = new TSettings();
-                return settings.CreateDefault() as TSettings;
+                settings = (TSettings) settings.CreateDefault();
+                settings.FilePath = filePath;
+                Save(settings);
+                return settings;
             }
         }
         #endregion
