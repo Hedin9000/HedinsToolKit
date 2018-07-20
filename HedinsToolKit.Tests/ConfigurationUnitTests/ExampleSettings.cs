@@ -9,6 +9,10 @@ namespace HedinsToolKit.Tests.ConfigurationUnitTests
 {
     public class ExampleSettings : SettingsJson
     {
+        public ExampleSettings() : base("settings.json")
+        {
+
+        }
         public int Count { get; set; }
 
         public Uri Uri { get; set; }

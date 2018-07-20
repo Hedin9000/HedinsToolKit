@@ -8,7 +8,15 @@ namespace HedinsToolKit.Configuration
 {
     public abstract class SettingsJson
     {
-      
+        #region Constructors
+
+        protected SettingsJson(string filePath)
+        {
+            FilePath = filePath;
+        }
+
+            #endregion
+
         #region Properties
 
         /// <summary>
@@ -98,7 +106,19 @@ namespace HedinsToolKit.Configuration
                 return settings;
             }
         }
+        /// <summary>
+        /// Load setting from default path.
+        /// </summary>
+        /// <typeparam name="TSettings">Type of settings class</typeparam>
+        /// <returns>Parsed settings. If file is not exist - return default</returns>
+        public static TSettings Load<TSettings>()
+            where TSettings : SettingsJson, new()
+        {
+            var settings = new TSettings();
+            return Load<TSettings>(settings.FilePath);
+        }
+
         #endregion
-        
+
     }
 }
